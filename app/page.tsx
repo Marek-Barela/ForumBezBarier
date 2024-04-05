@@ -4,12 +4,14 @@ import { PlusCircle, MessageSquare } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useQuery } from "react-query";
 import { useRouter } from "next/navigation";
+import { Card, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 
 interface Posts {
   posts: {
     id: number;
     title: string;
     content: string;
+    comments: [];
   }[];
 }
 
@@ -34,14 +36,14 @@ export default function Dashboard() {
                 onClick={() => route.push("/new-post")}>
                 <PlusCircle className="h-3.5 w-3.5" />
                 <span className="sr-only sm:not-sr-only sm:whitespace-nowrap">
-                  Add Post
+                  Dodaj Nowy Post
                 </span>
               </Button>
             </div>
           </div>
           <div className="flex flex-col gap-4 w-full">
             {data?.posts.map(({ id, ...rest }) => {
-              return <Post key={id} {...rest} />;
+              return <Post key={id} postId={id} {...rest} />;
             })}
           </div>
         </main>
@@ -51,37 +53,29 @@ export default function Dashboard() {
 }
 
 interface PostProps {
+  postId: number;
   title: string;
   content: string;
+  comments: [];
 }
 
-const Post = ({ title, content }: PostProps) => {
+const Post = ({ postId, title, content, comments }: PostProps) => {
+  const router = useRouter();
+
   return (
-    <div className="w-full mx-auto bg-white shadow-md overflow-hidden">
-      <div className="p-4">
-        <div className="flex items-center mb-4">
-          <div className="flex items-center">
-            {/* <div className="h-8 w-8 bg-gray-200 rounded-full mr-2"></div> */}
-            {/* <div className="text-sm text-gray-600">u/nazwa_użytkownika</div> */}
-          </div>
-          {/* <div className="ml-auto text-xs text-gray-500">7h ago</div> */}
-        </div>
-        <h2 className="mb-2 text-lg font-semibold text-gray-800">{title}</h2>
-        <p className="text-sm text-gray-600">{content}</p>
-      </div>
-      <div className="bg-gray-50 px-4 py-2 flex">
-        {/* <button className="text-gray-500 hover:text-gray-600 mr-2 flex items-center">
-          <ThumbsUp className="h-6 w-6" />
-          <span>1</span>
-        </button>
-        <button className="text-gray-500 hover:text-gray-600 flex items-center">
-          <ThumbsDown className="h-6 w-6" />
-        </button> */}
-        <span className="ml-auto text-gray-500 hover:text-gray-600 cursor-pointer flex items-center">
+    <Card className="cursor-pointer" onClick={() => router.push(`/post/${postId}`)}>
+      <CardHeader>
+        <CardTitle>{title}</CardTitle>
+        <CardDescription className="py-4 text-balance leading-relaxed">
+          {content}
+        </CardDescription>
+      </CardHeader>
+      <div className="bg-gray-50 px-4 py-2 flex w-full">
+        <span className="text-gray-500 hover:text-gray-600 flex items-center gap-3">
           <MessageSquare className="h-6 w-6" />
-          <span>0 komentarzy</span>
+          <span>{comments.length} komentarzy</span>
         </span>
       </div>
-    </div>
+    </Card>
   );
 };

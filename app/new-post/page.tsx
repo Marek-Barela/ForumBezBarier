@@ -10,6 +10,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
+import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { useMutation } from "react-query";
 
@@ -19,6 +20,7 @@ interface NewPost {
 }
 
 export default function NewPost() {
+  const router = useRouter();
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
 
@@ -34,7 +36,14 @@ export default function NewPost() {
   });
 
   const handleSubmit = () => {
-    mutate({ title, content });
+    mutate(
+      { title, content },
+      {
+        onSuccess() {
+          router.push("/");
+        },
+      }
+    );
   };
 
   return (

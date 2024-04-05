@@ -5,7 +5,9 @@ import { NextResponse } from "next/server";
 const prisma = new PrismaClient();
 
 const GET = async () => {
-  const posts = await prisma.post.findMany();
+  const posts = await prisma.post.findMany({
+    include: { comments: true },
+  });
 
   return NextResponse.json({
     posts,

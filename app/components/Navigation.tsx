@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { Menu, Search, MessageSquare } from "lucide-react";
+import { Menu, Search, TrendingUp } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -16,15 +16,15 @@ export function Navigation({ children }: NavigationProps) {
         <div className="flex h-full max-h-screen flex-col gap-2">
           <div className="flex h-14 items-center border-b px-4 lg:h-[60px] lg:px-6">
             <Link href="/" className="flex items-center gap-2 font-semibold">
-              <span>Forum</span>
+              <span>Forum Bez Barier</span>
             </Link>
           </div>
-          <div className="flex-1">
+          <div className="flex-1 p-4">
             <nav className="grid items-start px-2 text-sm font-medium lg:px-4">
               <NavigationItem
                 href="/"
-                title="Posts"
-                icon={<MessageSquare className="h-4 w-4" />}
+                title="Popularne"
+                icon={<TrendingUp className="h-4 w-4" />}
               />
             </nav>
           </div>
@@ -40,16 +40,16 @@ export function Navigation({ children }: NavigationProps) {
               </Button>
             </SheetTrigger>
             <SheetContent side="left" className="flex flex-col">
-              <nav className="grid gap-2 text-lg font-medium">
+              <nav className="grid gap-2 text-lg font-medium p-4">
                 <NavigationItem
                   href="/"
                   title="Posts"
-                  icon={<MessageSquare className="h-4 w-4" />}
+                  icon={<TrendingUp className="h-4 w-4" />}
                 />
               </nav>
             </SheetContent>
           </Sheet>
-          <div className="w-full flex-1">
+          {/* <div className="w-full flex-1">
             <form>
               <div className="relative">
                 <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
@@ -60,7 +60,7 @@ export function Navigation({ children }: NavigationProps) {
                 />
               </div>
             </form>
-          </div>
+          </div> */}
         </header>
         {children}
       </div>
@@ -78,7 +78,7 @@ const NavigationItem = ({ href, title, icon }: NavigationItemProps) => {
   return (
     <Link
       href={href}
-      className="flex items-center gap-3 rounded-lg px-3 py-2 text-muted-foreground transition-all hover:text-primary">
+      className="mx-[-0.65rem] flex items-center bg-slate-100 gap-4 rounded-xl px-3 py-2 text-muted-foreground hover:text-foreground">
       {icon}
       {title}
     </Link>
