@@ -1,12 +1,5 @@
 import Link from "next/link";
-import {
-  Home,
-  LineChart,
-  Menu,
-  Search,
-  Accessibility,
-  MessageSquare,
-} from "lucide-react";
+import { Menu, Search, MessageSquare } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -23,19 +16,13 @@ export function Navigation({ children }: NavigationProps) {
         <div className="flex h-full max-h-screen flex-col gap-2">
           <div className="flex h-14 items-center border-b px-4 lg:h-[60px] lg:px-6">
             <Link href="/" className="flex items-center gap-2 font-semibold">
-              {/* Title */}
-              <span className="">Forum</span>
+              <span>Forum</span>
             </Link>
           </div>
           <div className="flex-1">
             <nav className="grid items-start px-2 text-sm font-medium lg:px-4">
               <NavigationItem
                 href="/"
-                title="Dashboard"
-                icon={<Home className="h-4 w-4" />}
-              />
-              <NavigationItem
-                href="/posts"
                 title="Posts"
                 icon={<MessageSquare className="h-4 w-4" />}
               />
@@ -56,11 +43,6 @@ export function Navigation({ children }: NavigationProps) {
               <nav className="grid gap-2 text-lg font-medium">
                 <NavigationItem
                   href="/"
-                  title="Dashboard"
-                  icon={<Home className="h-4 w-4" />}
-                />
-                <NavigationItem
-                  href="/posts"
                   title="Posts"
                   icon={<MessageSquare className="h-4 w-4" />}
                 />

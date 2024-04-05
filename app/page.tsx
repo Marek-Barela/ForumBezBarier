@@ -1,15 +1,37 @@
+"use client";
 import { PlusCircle, MessageSquare } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
+import { useQuery } from "react-query";
+import { useRouter } from "next/navigation";
+
+interface Posts {
+  posts: {
+    id: number;
+    title: string;
+    content: string;
+  }[];
+}
 
 export default function Dashboard() {
+  const fetchPosts = (): Promise<Posts> => fetch("/api/posts").then(res => res.json());
+  const { data, isLoading, error } = useQuery<Posts>("posts", fetchPosts);
+
+  const route = useRouter();
+
+  if (isLoading) return <div>Loading...</div>;
+  if (error) return <div>An error occurred</div>;
+
   return (
     <div className="flex min-h-screen w-full flex-col bg-muted/40">
       <div className="flex flex-col sm:gap-4 sm:py-4">
         <main className="grid flex-1 items-start gap-4 p-4 sm:px-6 sm:py-0 md:gap-8">
           <div className="flex items-center">
             <div className="ml-auto flex items-center gap-2">
-              <Button size="sm" className="h-8 gap-1">
+              <Button
+                size="sm"
+                className="h-8 gap-1"
+                onClick={() => route.push("/new-post")}>
                 <PlusCircle className="h-3.5 w-3.5" />
                 <span className="sr-only sm:not-sr-only sm:whitespace-nowrap">
                   Add Post
@@ -18,12 +40,9 @@ export default function Dashboard() {
             </div>
           </div>
           <div className="flex flex-col gap-4 w-full">
-            <Post />
-            <Post />
-            <Post />
-            <Post />
-            <Post />
-            <Post />
+            {data?.posts.map(({ id, ...rest }) => {
+              return <Post key={id} {...rest} />;
+            })}
           </div>
         </main>
       </div>
@@ -31,19 +50,24 @@ export default function Dashboard() {
   );
 }
 
-const Post = () => {
+interface PostProps {
+  title: string;
+  content: string;
+}
+
+const Post = ({ title, content }: PostProps) => {
   return (
     <div className="w-full mx-auto bg-white shadow-md overflow-hidden">
       <div className="p-4">
         <div className="flex items-center mb-4">
           <div className="flex items-center">
-            <div className="h-8 w-8 bg-gray-200 rounded-full mr-2"></div>
-            <div className="text-sm text-gray-600">u/nazwa_użytkownika</div>
+            {/* <div className="h-8 w-8 bg-gray-200 rounded-full mr-2"></div> */}
+            {/* <div className="text-sm text-gray-600">u/nazwa_użytkownika</div> */}
           </div>
-          <div className="ml-auto text-xs text-gray-500">7h ago</div>
+          {/* <div className="ml-auto text-xs text-gray-500">7h ago</div> */}
         </div>
-        <h2 className="mb-2 text-lg font-semibold text-gray-800">Tytuł posta</h2>
-        <p className="text-sm text-gray-600">Treść posta...</p>
+        <h2 className="mb-2 text-lg font-semibold text-gray-800">{title}</h2>
+        <p className="text-sm text-gray-600">{content}</p>
       </div>
       <div className="bg-gray-50 px-4 py-2 flex">
         {/* <button className="text-gray-500 hover:text-gray-600 mr-2 flex items-center">
