@@ -8,7 +8,8 @@
     "start": "next start",
     "lint": "next lint",
     "seed": "node prisma/seed.js",
-    "prisma:seed": "prisma db seed"
+    "prisma:seed": "prisma db seed",
+    "postinstall": "prisma generate"
   },
   "dependencies": {
     "@prisma/client": "^5.12.1",
