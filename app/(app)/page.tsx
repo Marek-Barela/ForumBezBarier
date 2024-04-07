@@ -63,19 +63,23 @@ const Post = ({ postId, title, content, comments }: PostProps) => {
   const router = useRouter();
 
   return (
-    <Card className="cursor-pointer" onClick={() => router.push(`/post/${postId}`)}>
-      <CardHeader>
-        <CardTitle>{title}</CardTitle>
-        <CardDescription className="py-4 text-balance leading-relaxed">
-          {content}
-        </CardDescription>
-      </CardHeader>
-      <div className="bg-gray-50 px-4 py-2 flex w-full">
-        <span className="text-gray-500 hover:text-gray-600 flex items-center gap-3">
-          <MessageSquare className="h-6 w-6" />
-          <span>{comments.length} komentarzy</span>
-        </span>
-      </div>
-    </Card>
+    <button>
+      <Card
+        className="cursor-pointer text-left"
+        onClick={() => router.push(`/post/${postId}`)}>
+        <CardHeader>
+          <CardTitle>{title}</CardTitle>
+          <CardDescription className="py-4 text-balance leading-relaxed">
+            {content}
+          </CardDescription>
+        </CardHeader>
+        <div className="bg-gray-50 px-4 py-2 flex w-full">
+          <span className="text-gray-500 hover:text-gray-600 flex items-center gap-3">
+            <MessageSquare className="h-6 w-6" />
+            <span>{comments.length} komentarzy</span>
+          </span>
+        </div>
+      </Card>
+    </button>
   );
 };
