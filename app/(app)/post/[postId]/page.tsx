@@ -57,7 +57,7 @@ export default function PostPage({ params: { postId } }: PostPageProps) {
         <p className="text-gray-700 mb-10">{content}</p>
         <div className="flex items-center justify-between mt-2">
           <div className="flex space-x-1 text-gray-500 text-sm">
-            <span>{comments.length} komentarze</span>
+            <span>{comments?.length} komentarze</span>
           </div>
         </div>
       </div>
@@ -65,7 +65,7 @@ export default function PostPage({ params: { postId } }: PostPageProps) {
       <AddComment postId={postId} refetch={refetch} />
 
       <div className="grid auto-rows-max items-start gap-2 mt-2">
-        {comments.map(data => (
+        {comments?.map(data => (
           <Comment key={data.id} content={data.content} />
         ))}
       </div>

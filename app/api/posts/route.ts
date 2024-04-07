@@ -1,6 +1,7 @@
 import { PrismaClient } from "@prisma/client";
 import { NextRequest } from "next/server";
 import { NextResponse } from "next/server";
+import { auth } from "@clerk/nextjs";
 
 const prisma = new PrismaClient();
 
@@ -15,15 +16,21 @@ const GET = async () => {
 };
 
 const POST = async (req: NextRequest) => {
-  const body = await req.json();
+  const { userId } = auth();
 
   try {
+    if (!userId) {
+      return new NextResponse("Unauthorized", { status: 401 });
+    }
+
+    const body = await req.json();
     const { title, content } = body;
 
     const newPost = await prisma.post.create({
       data: {
         title,
         content,
+        userId,
       },
     });
 

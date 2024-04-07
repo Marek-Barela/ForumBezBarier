@@ -76,7 +76,7 @@ const Post = ({ postId, title, content, comments }: PostProps) => {
         <div className="bg-gray-50 px-4 py-2 flex w-full">
           <span className="text-gray-500 hover:text-gray-600 flex items-center gap-3">
             <MessageSquare className="h-6 w-6" />
-            <span>{comments.length} komentarzy</span>
+            <span>{comments?.length} komentarzy</span>
           </span>
         </div>
       </Card>

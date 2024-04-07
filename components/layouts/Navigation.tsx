@@ -1,17 +1,9 @@
 import Link from "next/link";
-import { Menu, TrendingUp, User } from "lucide-react";
+import { Menu, TrendingUp } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
-import { currentUser } from "@clerk/nextjs";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
-import { DropdownMenuSeparator } from "../ui/dropdown-menu";
+import { currentUser, UserButton } from "@clerk/nextjs";
 
 interface NavigationProps {
   children: React.ReactNode;
@@ -60,26 +52,7 @@ export async function Navigation({ children }: NavigationProps) {
             </SheetContent>
           </Sheet>
           <div />
-          {user && (
-            <DropdownMenu>
-              <DropdownMenuTrigger asChild>
-                <Button
-                  variant="outline"
-                  size="icon"
-                  className="overflow-hidden rounded-full">
-                  <User />
-                </Button>
-              </DropdownMenuTrigger>
-              <DropdownMenuContent align="end">
-                <DropdownMenuLabel>{`${user.firstName} ${user.lastName}`}</DropdownMenuLabel>
-                <DropdownMenuSeparator />
-                <DropdownMenuItem>Settings</DropdownMenuItem>
-                <DropdownMenuItem>Support</DropdownMenuItem>
-                <DropdownMenuSeparator />
-                <DropdownMenuItem>Logout</DropdownMenuItem>
-              </DropdownMenuContent>
-            </DropdownMenu>
-          )}
+          {user && <UserButton afterSignOutUrl="/" />}
         </header>
         {children}
       </div>
