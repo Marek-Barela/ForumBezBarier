@@ -52,7 +52,13 @@ export async function Navigation({ children }: NavigationProps) {
             </SheetContent>
           </Sheet>
           <div />
-          {user && <UserButton afterSignOutUrl="/" />}
+          {user ? (
+            <UserButton afterSignOutUrl="/" />
+          ) : (
+            <Link href="/sign-in">
+              <Button>Zaloguj</Button>
+            </Link>
+          )}
         </header>
         {children}
       </div>
