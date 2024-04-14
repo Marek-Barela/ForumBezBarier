@@ -1,9 +1,10 @@
 import Link from "next/link";
-import { Menu, TrendingUp } from "lucide-react";
+import { Menu, TrendingUp, UserRound } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { currentUser, UserButton } from "@clerk/nextjs";
+import { NavigationItem } from "./components/NavigationItem";
 
 interface NavigationProps {
   children: React.ReactNode;
@@ -22,11 +23,16 @@ export async function Navigation({ children }: NavigationProps) {
             </Link>
           </div>
           <div className="flex-1 p-4">
-            <nav className="grid items-start px-2 text-sm font-medium lg:px-4">
+            <nav className="grid items-start gap-4 px-2 text-sm font-medium lg:px-4">
               <NavigationItem
                 href="/"
                 title="Popularne"
                 icon={<TrendingUp className="h-4 w-4" />}
+              />
+              <NavigationItem
+                href="/my-posts"
+                title="Moje Posty"
+                icon={<UserRound className="h-4 w-4" />}
               />
             </nav>
           </div>
@@ -45,8 +51,13 @@ export async function Navigation({ children }: NavigationProps) {
               <nav className="grid gap-2 text-lg font-medium p-4">
                 <NavigationItem
                   href="/"
-                  title="Posts"
+                  title="Popularne"
                   icon={<TrendingUp className="h-4 w-4" />}
+                />
+                <NavigationItem
+                  href="/my-posts"
+                  title="Moje Posty"
+                  icon={<UserRound className="h-4 w-4" />}
                 />
               </nav>
             </SheetContent>
@@ -66,19 +77,19 @@ export async function Navigation({ children }: NavigationProps) {
   );
 }
 
-interface NavigationItemProps {
-  href: string;
-  title: string;
-  icon: JSX.Element;
-}
+// interface NavigationItemProps {
+//   href: string;
+//   title: string;
+//   icon: JSX.Element;
+// }
 
-const NavigationItem = ({ href, title, icon }: NavigationItemProps) => {
-  return (
-    <Link
-      href={href}
-      className="mx-[-0.65rem] flex items-center bg-slate-100 gap-4 rounded-xl px-3 py-2 text-muted-foreground hover:text-foreground">
-      {icon}
-      {title}
-    </Link>
-  );
-};
+// const NavigationItem = ({ href, title, icon }: NavigationItemProps) => {
+//   return (
+//     <Link
+//       href={href}
+//       className="mx-[-0.65rem] flex items-center bg-slate-100 gap-4 rounded-xl px-3 py-2 text-muted-foreground hover:text-foreground">
+//       {icon}
+//       {title}
+//     </Link>
+//   );
+// };
