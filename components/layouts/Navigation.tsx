@@ -5,10 +5,13 @@ import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { currentUser, UserButton } from "@clerk/nextjs";
 import { NavigationItem } from "./components/NavigationItem";
+import { routes } from "@/routing";
 
 interface NavigationProps {
   children: React.ReactNode;
 }
+
+const { root, popular, myPosts, signIn } = routes;
 
 export async function Navigation({ children }: NavigationProps) {
   const user = await currentUser();
@@ -18,19 +21,19 @@ export async function Navigation({ children }: NavigationProps) {
       <div className="hidden border-r bg-muted/40 md:block">
         <div className="flex h-full max-h-screen flex-col gap-2">
           <div className="flex h-14 items-center border-b px-4 lg:h-[60px] lg:px-6">
-            <Link href="/" className="flex items-center gap-2 font-semibold">
+            <Link href={root} className="flex items-center gap-2 font-semibold">
               <span>Forum Bez Barier</span>
             </Link>
           </div>
           <div className="flex-1 p-4">
             <nav className="grid items-start gap-4 px-2 text-sm font-medium lg:px-4">
               <NavigationItem
-                href="/"
+                href={popular}
                 title="Popularne"
                 icon={<TrendingUp className="h-4 w-4" />}
               />
               <NavigationItem
-                href="/my-posts"
+                href={myPosts}
                 title="Moje Posty"
                 icon={<UserRound className="h-4 w-4" />}
               />
@@ -50,12 +53,12 @@ export async function Navigation({ children }: NavigationProps) {
             <SheetContent side="left" className="flex flex-col">
               <nav className="grid gap-2 text-lg font-medium p-4">
                 <NavigationItem
-                  href="/"
+                  href={popular}
                   title="Popularne"
                   icon={<TrendingUp className="h-4 w-4" />}
                 />
                 <NavigationItem
-                  href="/my-posts"
+                  href={myPosts}
                   title="Moje Posty"
                   icon={<UserRound className="h-4 w-4" />}
                 />
@@ -66,7 +69,7 @@ export async function Navigation({ children }: NavigationProps) {
           {user ? (
             <UserButton afterSignOutUrl="/" />
           ) : (
-            <Link href="/sign-in">
+            <Link href={signIn}>
               <Button>Zaloguj</Button>
             </Link>
           )}
@@ -76,20 +79,3 @@ export async function Navigation({ children }: NavigationProps) {
     </div>
   );
 }
-
-// interface NavigationItemProps {
-//   href: string;
-//   title: string;
-//   icon: JSX.Element;
-// }
-
-// const NavigationItem = ({ href, title, icon }: NavigationItemProps) => {
-//   return (
-//     <Link
-//       href={href}
-//       className="mx-[-0.65rem] flex items-center bg-slate-100 gap-4 rounded-xl px-3 py-2 text-muted-foreground hover:text-foreground">
-//       {icon}
-//       {title}
-//     </Link>
-//   );
-// };
