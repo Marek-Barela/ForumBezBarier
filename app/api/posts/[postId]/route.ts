@@ -17,7 +17,7 @@ export async function GET(_: NextRequest, { params }: { params: { postId: string
 
   try {
     const post = await prisma.post.findUnique({
-      where: { id: Number(postId) },
+      where: { id: postId },
       include: { comments: true },
     });
 

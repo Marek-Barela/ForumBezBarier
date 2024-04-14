@@ -5,14 +5,14 @@ import { Button } from "@/components/ui/button";
 import { useQuery } from "react-query";
 import { useRouter } from "next/navigation";
 import { Card, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { Post, Comment } from "@prisma/client";
+
+interface PostProps extends Post {
+  comments: Comment[];
+}
 
 interface Posts {
-  posts: {
-    id: number;
-    title: string;
-    content: string;
-    comments: [];
-  }[];
+  posts: PostProps[];
 }
 
 export default function Dashboard() {
@@ -42,8 +42,8 @@ export default function Dashboard() {
             </div>
           </div>
           <div className="flex flex-col gap-4 w-full">
-            {data?.posts.map(({ id, ...rest }) => {
-              return <Post key={id} postId={id} {...rest} />;
+            {data?.posts.map(post => {
+              return <PostItem key={post.id} {...post} />;
             })}
           </div>
         </main>
@@ -52,23 +52,17 @@ export default function Dashboard() {
   );
 }
 
-interface PostProps {
-  postId: number;
-  title: string;
-  content: string;
-  comments: [];
-}
-
-const Post = ({ postId, title, content, comments }: PostProps) => {
+const PostItem = ({ id, title, content, comments, author }: PostProps) => {
   const router = useRouter();
 
   return (
     <button>
       <Card
         className="cursor-pointer text-left"
-        onClick={() => router.push(`/post/${postId}`)}>
+        onClick={() => router.push(`/post/${id}`)}>
         <CardHeader>
           <CardTitle>{title}</CardTitle>
+          <CardTitle className="text-sm mt-2">Autor - {author}</CardTitle>
           <CardDescription className="py-4 text-balance leading-relaxed">
             {content}
           </CardDescription>

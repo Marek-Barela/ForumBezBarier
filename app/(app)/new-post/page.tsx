@@ -10,21 +10,21 @@ import {
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
+import { useAuth, useUser } from "@clerk/nextjs";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { useMutation } from "react-query";
-
-interface NewPost {
-  title: string;
-  content: string;
-}
+import { Post } from "@prisma/client";
 
 export default function NewPost() {
   const router = useRouter();
+  const { userId } = useAuth();
+  const { user } = useUser();
+
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
 
-  const { mutate, isLoading } = useMutation(async (newPost: NewPost) => {
+  const { mutate, isLoading } = useMutation(async (newPost: Partial<Post>) => {
     const res = await fetch("/api/posts", {
       method: "POST",
       headers: {
@@ -37,7 +37,7 @@ export default function NewPost() {
 
   const handleSubmit = () => {
     mutate(
-      { title, content },
+      { title, content, userId: userId || "", author: user?.fullName || "" },
       {
         onSuccess() {
           router.push("/");

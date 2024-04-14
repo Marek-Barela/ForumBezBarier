@@ -4,7 +4,10 @@ import { ArrowLeftCircle } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
-import { Card, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { Post, Comment } from "@prisma/client";
+import { CommentItem } from "./components/CommentItem";
+import { useUser } from "@clerk/nextjs";
+import Link from "next/link";
 
 interface PostPageProps {
   params: {
@@ -12,25 +15,18 @@ interface PostPageProps {
   };
 }
 
-interface Comment {
-  id: number;
-  content: string;
-}
-
-interface Post {
-  id: number;
-  title: string;
-  content: string;
+interface PostsWithComments extends Post {
   comments: Comment[];
 }
 
 export default function PostPage({ params: { postId } }: PostPageProps) {
   const router = useRouter();
+  const { user } = useUser();
 
-  const fetchPost = (postId: string): Promise<Post> =>
+  const fetchPost = (postId: string): Promise<PostsWithComments> =>
     fetch(`/api/posts/${postId}`).then(res => res.json());
 
-  const { data, isLoading, error, refetch } = useQuery<Post, Error>(
+  const { data, isLoading, error, refetch } = useQuery<PostsWithComments, Error>(
     ["post", postId],
     () => fetchPost(postId),
     {
@@ -47,7 +43,7 @@ export default function PostPage({ params: { postId } }: PostPageProps) {
   return (
     <article className="w-full mx-auto bg-white rounded-md overflow-hidden my-4">
       <div
-        className="flex gap-2 items-center cursor-pointer"
+        className="flex gap-2 items-center cursor-pointer mb-10"
         onClick={() => router.push("/")}>
         <ArrowLeftCircle width={30} height={30} />
         <p>Powrót</p>
@@ -62,48 +58,33 @@ export default function PostPage({ params: { postId } }: PostPageProps) {
         </div>
       </div>
 
-      <AddComment postId={postId} refetch={refetch} />
+      {user ? (
+        <AddComment postId={postId} refetch={refetch} />
+      ) : (
+        <Link href="/sign-in">
+          <Button className="space-x-1 my-10">Aby dodać komentarz zaloguj się!</Button>
+        </Link>
+      )}
 
       <div className="grid auto-rows-max items-start gap-2 mt-2">
         {comments?.map(data => (
-          <Comment key={data.id} content={data.content} />
+          <CommentItem key={data.id} refetch={refetch} {...data} />
         ))}
       </div>
     </article>
   );
 }
 
-interface CommentProps {
-  content: string;
-}
-
-const Comment = ({ content }: CommentProps) => {
-  return (
-    <Card>
-      <CardHeader>
-        <CardTitle>Komentarz</CardTitle>
-        <CardDescription className="max-w-3xl text-balance leading-relaxed">
-          {content}
-        </CardDescription>
-      </CardHeader>
-    </Card>
-  );
-};
-
 interface AddCommentProps {
   postId: string;
   refetch: () => void;
 }
 
-interface NewComment {
-  content: string;
-  postId: string;
-}
-
 const AddComment = ({ postId, refetch }: AddCommentProps) => {
+  const { user } = useUser();
   const [comment, setComment] = useState("");
 
-  const { mutate, isLoading } = useMutation(async (newComment: NewComment) => {
+  const { mutate, isLoading } = useMutation(async (newComment: Partial<Comment>) => {
     const res = await fetch("/api/comments", {
       method: "POST",
       headers: {
@@ -121,6 +102,8 @@ const AddComment = ({ postId, refetch }: AddCommentProps) => {
         {
           content: comment,
           postId,
+          author: user?.fullName || "",
+          userId: user?.id,
         },
         {
           onSuccess() {
