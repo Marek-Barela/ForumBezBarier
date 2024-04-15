@@ -6,6 +6,7 @@ import { useUser } from "@clerk/nextjs";
 import Image from "next/image";
 import { ShieldIcon, UsersIcon, AccessibilityIcon, ScalingIcon } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { SignInButton } from "@/components/features/SignInButton";
 
 const { popular, myPosts, signIn } = routes;
 
@@ -42,11 +43,12 @@ export default function Landing() {
             </Link>
 
             {!user ? (
-              <Link href={signIn} className="flex-1" style={{ margin: 0 }}>
-                <Button className="w-full" variant="outline">
-                  Zaloguj
-                </Button>
-              </Link>
+              <SignInButton
+                className="flex-1 w-full"
+                style={{ margin: 0 }}
+                text="Zaloguj"
+                variant="outline"
+              />
             ) : (
               <Link href={myPosts} className="flex-1" style={{ margin: 0 }}>
                 <Button className="w-full" variant="outline">

@@ -6,6 +6,7 @@ import { useQuery } from "react-query";
 import { useRouter } from "next/navigation";
 import { Card, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Post, Comment } from "@prisma/client";
+import { routes } from "@/routing";
 
 interface PostProps extends Post {
   comments: Comment[];
@@ -59,7 +60,7 @@ const PostItem = ({ id, title, content, comments, author }: PostProps) => {
     <button>
       <Card
         className="cursor-pointer text-left"
-        onClick={() => router.push(`/post/${id}`)}>
+        onClick={() => router.push(routes.post + `/${id}`)}>
         <CardHeader>
           <CardTitle>{title}</CardTitle>
           <CardTitle className="text-sm mt-2">Autor - {author}</CardTitle>

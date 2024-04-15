@@ -8,6 +8,7 @@ import { Post, Comment } from "@prisma/client";
 import { CommentItem } from "./components/CommentItem";
 import { useUser } from "@clerk/nextjs";
 import Link from "next/link";
+import { routes } from "@/routing";
 
 interface PostPageProps {
   params: {
@@ -44,7 +45,7 @@ export default function PostPage({ params: { postId } }: PostPageProps) {
     <article className="w-full mx-auto bg-white rounded-md overflow-hidden my-4">
       <div
         className="flex gap-2 items-center cursor-pointer mb-10"
-        onClick={() => router.push("/")}>
+        onClick={() => router.push(routes.popular)}>
         <ArrowLeftCircle width={30} height={30} />
         <p>Powrót</p>
       </div>

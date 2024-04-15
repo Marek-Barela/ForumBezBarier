@@ -15,6 +15,7 @@ import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { useMutation } from "react-query";
 import { Post } from "@prisma/client";
+import { routes } from "@/routing";
 
 export default function NewPost() {
   const router = useRouter();
@@ -36,14 +37,16 @@ export default function NewPost() {
   });
 
   const handleSubmit = () => {
-    mutate(
-      { title, content, userId: userId || "", author: user?.fullName || "" },
-      {
-        onSuccess() {
-          router.push("/");
-        },
-      }
-    );
+    if (title.trim() && content.trim()) {
+      mutate(
+        { title, content, userId: userId || "", author: user?.fullName || "" },
+        {
+          onSuccess() {
+            router.push(routes.popular);
+          },
+        }
+      );
+    }
   };
 
   return (

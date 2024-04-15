@@ -5,4 +5,5 @@ export const routes = {
   myPosts: "/my-posts",
   signIn: "/sign-in",
   signOut: "/sign-out",
+  post: "/post",
 };

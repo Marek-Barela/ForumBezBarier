@@ -6,12 +6,13 @@ import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { currentUser, UserButton } from "@clerk/nextjs";
 import { NavigationItem } from "./components/NavigationItem";
 import { routes } from "@/routing";
+import { SignInButton } from "@/components/features/SignInButton";
 
 interface NavigationProps {
   children: React.ReactNode;
 }
 
-const { root, popular, myPosts, signIn } = routes;
+const { root, popular, myPosts } = routes;
 
 export async function Navigation({ children }: NavigationProps) {
   const user = await currentUser();
@@ -67,11 +68,9 @@ export async function Navigation({ children }: NavigationProps) {
           </Sheet>
           <div />
           {user ? (
-            <UserButton afterSignOutUrl="/" />
+            <UserButton afterSignOutUrl={popular} />
           ) : (
-            <Link href={signIn}>
-              <Button>Zaloguj</Button>
-            </Link>
+            <SignInButton text="Zaloguj" />
           )}
         </header>
         {children}
