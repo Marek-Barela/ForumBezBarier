@@ -1,16 +1,10 @@
 "use client";
-import { PlusCircle, MessageSquare } from "lucide-react";
+import { PlusCircle } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
 import { useQuery } from "react-query";
 import { useRouter } from "next/navigation";
-import { Card, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Post, Comment } from "@prisma/client";
-import { routes } from "@/routing";
-
-interface PostProps extends Post {
-  comments: Comment[];
-}
+import { PostItem, PostProps } from "@/components/features/PostItem";
 
 interface Posts {
   posts: PostProps[];
@@ -43,38 +37,13 @@ export default function Dashboard() {
             </div>
           </div>
           <div className="flex flex-col gap-4 w-full">
-            {data?.posts.map(post => {
-              return <PostItem key={post.id} {...post} />;
-            })}
+            {data &&
+              data?.posts.map(post => {
+                return <PostItem key={post.id} {...post} />;
+              })}
           </div>
         </main>
       </div>
     </div>
   );
 }
-
-const PostItem = ({ id, title, content, comments, author }: PostProps) => {
-  const router = useRouter();
-
-  return (
-    <button>
-      <Card
-        className="cursor-pointer text-left"
-        onClick={() => router.push(routes.post + `/${id}`)}>
-        <CardHeader>
-          <CardTitle>{title}</CardTitle>
-          <CardTitle className="text-sm mt-2">Autor - {author}</CardTitle>
-          <CardDescription className="py-4 text-balance leading-relaxed">
-            {content}
-          </CardDescription>
-        </CardHeader>
-        <div className="bg-gray-50 px-4 py-2 flex w-full">
-          <span className="text-gray-500 hover:text-gray-600 flex items-center gap-3">
-            <MessageSquare className="h-6 w-6" />
-            <span>{comments?.length} komentarzy</span>
-          </span>
-        </div>
-      </Card>
-    </button>
-  );
-};
