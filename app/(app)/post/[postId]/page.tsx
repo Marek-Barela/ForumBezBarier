@@ -42,7 +42,7 @@ export default function PostPage({ params: { postId } }: PostPageProps) {
   const { comments, content, title } = data;
 
   return (
-    <article className="w-full mx-auto bg-white rounded-md overflow-hidden my-4">
+    <article className="w-full mx-auto bg-white rounded-md overflow-hidden my-4 p-8">
       <div
         className="flex gap-2 items-center cursor-pointer mb-10"
         onClick={() => router.push(routes.popular)}>
